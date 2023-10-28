@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import acceptLanguage from 'accept-language'
 import { fallbackLng, languages, cookieName } from './app/i18n/settings'
+// import { withAuth } from "next-auth/middleware"
 
 acceptLanguage.languages(languages)
 
@@ -10,6 +11,7 @@ export const config = {
     matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js).*)']
 
 }
+
 
 
 export default function middleware(req: any,) {
@@ -38,6 +40,8 @@ export default function middleware(req: any,) {
 
 
 
+
+
     let lng
     if (req.cookies.has(cookieName)) lng = acceptLanguage.get(req.cookies.get(cookieName).value)
     if (!lng) lng = acceptLanguage.get(req.headers.get('Accept-Language'))
@@ -58,6 +62,7 @@ export default function middleware(req: any,) {
         if (lngInReferer) response.cookies.set(cookieName, lngInReferer)
         return response
     }
+
 
 
     return NextResponse.next()
